@@ -1,0 +1,20 @@
+<h1>Moja Strona - wpisy z kategorii {{ category.name }}</h1>
+{% for entry in news_list %}
+<h3><a href="{% url 'news-detail' entry.slug %}">{{ entry.title }}</a></h3>
+{{ entry.text|safe }}<br />
+{{ entry.date|date:"Y.m.d H:i" }}
+{% for category in entry.categories.all %}
+<a href="{% url 'category-news-list' category.slug %}">{{ category.name }}</a>
+{% if not forloop.last %}, {% endif %}
+{% endfor %}
+{% endfor %}
+
+
+{% if is_paginated %} <hr/>
+{% if page_obj.has_next %}
+<a href="{% url 'category-news-list' category.slug page_obj.next_page_number %}">starsze</a>
+{% endif %}
+{% if page_obj.has_previous %}
+<a href="{% url 'category-news-list' category.slug page_obj.previous_page_number %}">nowsze</a>
+{% endif %}
+{% endif %}
